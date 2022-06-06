@@ -5,49 +5,49 @@
 
 <PageTitle>Persons</PageTitle>
 <div class="container">
-    <h3 class="col-12">Persons Page</h3>
+    <h3 class="col-12">Cererile de cazare</h3>
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                            <th>Status</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (PersonService.Persons == null)
-                        {
+                <button class="btn btn-primary" @onclick="AddPerson">Scrie cerere</button>
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td colspan=5>
-                                    Information is loading...
-                                </td>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Status</th>
+                                <th></th>
                             </tr>
-                        }
-                        else
-                        {
-                            @foreach (var person in PersonService.Persons)
+                        </thead>
+                        <tbody>
+                            @if (PersonService.Persons == null)
                             {
                                 <tr>
-                                    <td>@person.FirstName</td>
-                                    <td>@person.LastName</td>
-                                    <td>@person.Email</td>
-                                    <td>@person.MobileNo</td>
-                                    <td>@person.Status</td>
-                                    <td>
-                                        <button class="btn btn-primary" @onclick="(() => ShowPerson(person.Id))">Edit</button>
+                                    <td colspan=5>
+                                        Information is loading...
                                     </td>
                                 </tr>
                             }
-                        }
-                    </tbody>
-                </table>
-                    <button class="btn btn-primary" @onclick="AddPerson">Create Person</button>
+                            else
+                            {
+                                @foreach (var person in PersonService.Persons)
+                                {
+                                    <tr>
+                                        <td>@person.FirstName</td>
+                                        <td>@person.LastName</td>
+                                        <td>@person.Email</td>
+                                        <td>@person.MobileNo</td>
+                                        <td>@person.Status</td>
+                                        <td>
+                                            <button class="btn btn-primary" @onclick="(() => ShowPerson(person.Id))">Edit</button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
             </div>
         </div>
     </div>
