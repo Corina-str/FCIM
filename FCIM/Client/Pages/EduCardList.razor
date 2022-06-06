@@ -1,0 +1,73 @@
+﻿@page "/educards"
+@using BiroulSindicalFCIM.Client.Services
+@inject IEduCardService EduCardService
+@inject NavigationManager NavigationManager
+
+<PageTitle>EduCards</PageTitle>
+<div class="container">
+    <h3 class="col-12">EduCards Page</h3>
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Grupa academica</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (EduCardService.EduCards == null)
+                        {
+                            <tr>
+                                <td colspan=5>
+                                    Information is loading...
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var educard in EduCardService.EduCards)
+                            {
+                                <tr>
+                                    <td>@educard.FirstName</td>
+                                    <td>@educard.LastName</td>
+                                    <td>@educard.Email</td>
+                                    <td>@educard.MobileNo</td>
+                                    <td>@educard.Grupa</td>
+                                    <td>
+                                        <button class="btn btn-primary" @onclick="(() => ShowEduCard(educard.Id))">Edit</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                    <button class="btn btn-primary" @onclick="AddEduCard">Create EduCard</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await EduCardService.GetEduCards();
+    }
+
+    void ShowEduCard(int id)
+    {
+        NavigationManager.NavigateTo($"educard/{id}");
+    }
+
+    void AddEduCard()
+    {
+        NavigationManager.NavigateTo("/educard");
+    }
+}
