@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +19,13 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddIdentityServer()
-    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options => {
+        options.IdentityResources["openid"].UserClaims.Add("role");
+        options.ApiResources.Single().UserClaims.Add("role");
+    });
 
+// Need to do this as it maps "role" to ClaimTypes.Role and causes issues
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 

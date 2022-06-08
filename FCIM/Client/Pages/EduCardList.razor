@@ -3,7 +3,7 @@
 @inject IEduCardService EduCardService
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Authorization
-@attribute [Authorize(Roles ="Admin")]
+@attribute [Authorize(Roles ="Admin, Student")]
 <PageTitle>EduCards</PageTitle>
 <div class="container">
     <h3 class="col-12">EduCards Page</h3>
@@ -11,6 +11,8 @@
         <div class="col-12">
             <div class="table-responsive">
                 <button class="btn btn-primary" @onclick="AddEduCard">Create EduCard</button>
+                <AuthorizeView Roles="Admin">
+                <Authorized>
                 <table class="table">
                     <thead>
                         <tr>
@@ -49,6 +51,8 @@
                         }
                     </tbody>
                 </table>
+                </Authorized>
+                </AuthorizeView>
                 </div>
         </div>
     </div>
