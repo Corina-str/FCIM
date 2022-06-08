@@ -16,6 +16,7 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().Cre
 
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IEduCardService, EduCardService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 
 
 builder.Services.AddApiAuthorization();

@@ -1,0 +1,95 @@
+﻿@page "/message"
+@page "/message/{id:int}"
+@using BiroulSindicalFCIM.Client.Services
+@using BiroulSindicalFCIM.Shared
+@using FCIM.Shared
+@inject IMessageService MessageService
+
+<div class="container">
+
+    @if (Id == null)
+    {
+        <PageTitle>Add Message</PageTitle>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-6">
+                <br />
+                <h3>Add new message</h3>
+                <br />
+            </div>
+        </div>
+    }
+    else
+    {
+        <PageTitle>Edit @message.Mesaj</PageTitle>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-6">
+                <br />
+                <h3>Edit @message.Mesaj </h3>
+            </div>
+        </div>
+    }
+    <div class="row justify-content-center">
+            <EditForm Model="message" OnSubmit="HandleSubmit">
+                <div class="row">
+                    <div class="col-md-20">
+                        <div class="form-group">
+                            <label for="Mesaj">Mesajul</label>
+                            <InputText id="Mesaj" @bind-Value="message.Mesaj" class="form-control"></InputText>
+                            <ValidationMessage For="@(() => message.Mesaj)" />
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+                <br />
+                <button class="btn btn-primary" type="submit">@btnText</button>
+                <button class="btn btn-danger" type="button" @onclick="DeleteMessage">Delete Message</button>
+                <br />
+            </EditForm>
+        </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    string btnText = string.Empty;
+
+    Message message = new Message { };
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        btnText = Id == null ? "Save New Message" : "Update Message";
+        await MessageService.GetMessages();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id == null)
+        {
+
+        }
+        else message = await MessageService.GetMessageById((int)Id);
+    }
+
+    async Task HandleSubmit()
+    {
+        if (Id == null)
+        {
+            await MessageService.CreateMessage(message);
+        }
+        else{
+            await MessageService.UpdateMessage(message);
+        }
+    }
+
+    async Task DeleteMessage()
+    {
+        await MessageService.DeleteMessage(message.Id);
+    }
+}
